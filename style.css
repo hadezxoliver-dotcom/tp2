@@ -1,0 +1,16 @@
+
+.g, .g1, .p, .p1, .c, .c1 {
+    border: 2px solid black;
+    width: 450px;
+    height: auto;           /* Cambiado de 450px fijo a automático */
+    padding: 15px;
+    margin: 20px auto;      /* Centra las cajas ordenadamente una debajo de otra */
+    background-color: white; /* Fondo blanco para que resalte */
+    position: relative;
+}
+
+/* Anula los margenes locos anteriores de las versiones "1" */
+.g1, .p1, .c1 {
+    margin-left: auto;
+    top: auto;
+}

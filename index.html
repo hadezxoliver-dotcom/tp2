@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Web - Animales</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: cadetblue;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #1e3a40;
+            border-bottom: 2px solid #1e3a40;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+
+        /* Estilos para el contenedor del Header */
+        header {
+            background-color: #1e3a40;
+            padding: 12px 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        header a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: capitalize;
+            padding: 8px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        header a:hover {
+            background-color: #ffffff;
+            color: #1e3a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Contenedor en cuadrícula (Grid) para poner las tarjetas de a dos al lado */
+        .seccion-animales {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        /* Estilos comunes para las tarjetas de animales */
+        .g, .g1, .p, .p1, .c, .c1 {
+            border: 2px solid black;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Imágenes responsivas dentro de las tarjetas */
+        .g img, .g1 img, .p img, .p1 img, .c img, .c1 img {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border-radius: 8px;
+        }
+
+        /* Estilo base para todos los botones */
+        input[type="button"] {
+            background-color: #2b580c;
+            color: #ffffff;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="button"]:hover {
+            background-color: #3e7b13;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="button"]:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Pie de página */
+        footer {
+            text-align: center;
+            color: #fff;
+            margin-top: 40px;
+            padding: 15px;
+            background-color: #1e3a40;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Animales</h1>
+    
+    <header>
+        <a href="#gatos">Razas de Gatos</a>
+        <a href="#perros">Razas de Perros</a>
+        <a href="#conejos">Razas de Conejos</a>
+    </header>
+
+    <main>
+        <!-- SECCIÓN GATOS -->
+        <h2 id="gatos">Gatos</h2>
+        <div class="seccion-animales">
+            <div class="g">
+                <h4>Gato europeo común</h4>
+                <a href="https://youtu.be/dac5yvxVbLc" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Female_European_shorthair_in_cat_show_Helsinki_2005-07-31.JPG" alt="Gato europeo común">
+                </a>
+                <p>Es un gato común conocido por su variedad de colores, carácter independiente y ser cariñoso. Presione sobre la imagen para ver el video.</p>
+                <div>
+                    <input type="button" value="Ver info">
+                    <input type="button" value="Comprar mascota">
+                </div>
+            </div>
+
+            <div class="g1">
+                <h4>Maine Coon</h4>
+                <a href="https://youtu.be/Nv-UpAFQuRU?si=xGRj6VlaLHXBUak-" target="_blank">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz06jT4MJMphfbOmGq2pN6nDwIL-hPZO_Ljq5gYlPtIA&s" alt="Maine Coon">
+                </a>
+                <p>Uno de los más grandes felinos que destacan por su tamaño, pelaje largo y su naturaleza sociable. Presione sobre la imagen para ver el video.</p>
+                <div>
+                    <input type="button" value="Ver info">
+                    <input type="button" value="Comprar mascota">
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECCIÓN PERROS -->
+        <h2 id="perros">Perros</h2>
+        <div class="seccion-animales">
+            <div class="p">
+                <h4>Golden Retriever</h4>
+                <a href="https://youtu.be/Je09ps-3DTw?si=OoOjyPhH5sgIqrl-" target="_blank">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdSdqSbBK897nKcOCzOO0pIZiX71EXqkJfGZdQLRw70Q&s=10" alt="Golden Retriever">
+                </a>
+                <p>Famoso por su amabilidad, inteligencia y excelente trato con los niños y demás mascotas. Presione sobre la imagen para ver el video.</p>
+                <div>
+                    <input type="button" value="Ver info">
+                    <input type="button" value="Comprar mascota">
+                </div>
+            </div>
+
+            <div class="p1">
+                <h4>Ovejero Alemán</h4>
+                <a href="https://youtu.be/aFpE0lLbI7M?si=ymry1jssbjoWcXFv" target="_blank">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv2Py3wlIh2GtxVKMyWlnO6ZvGvQPs-yVlhPnrnNI-fQ&s=10" alt="Ovejero Alemán">
+                </a>
+                <p>Es un perro valiente, protector, muy fácil de entrenar y con gran capacidad de trabajo. Presione sobre la imagen para ver el video.</p>
+                <div>
+                    <input type="button" value="Ver info">
+                    <input type="button" value="Comprar mascota">
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN CONEJOS -->
+        <h2 id="conejos">Conejos</h2>
+        <div class="seccion-animales">
+            <div class="c">
+                <h4>Cabeza de León</h4>
+                <a href="https://youtu.be/jmQWE4lHI9Y?si=YS_54HB3Nyq2CCSf" target="_blank">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJrA_D8mT4Tc1cugA87glS-Zl2_gLVaaE9IxOVh1nBFSLx4lj0pUniNVo&s=10" alt="Conejo cabeza de león">
+                </a>
+                <p>Un conejo que destaca por su melena abundante alrededor de su cabeza. Es una mascota juguetona, curiosa y popular en Argentina. Presione sobre la imagen para ver el video.</p>
+                <div>
+                    <input type="button" value="Ver info">
+                    <input type="button" value="Comprar mascota">
+                </div>
+            </div>
+
+            <div class="c1">
+                <h4>Mini Lop</h4>
+                <a href="https://youtu.be/MZR8EaYE0cw?si=e4apyxEVlFgK4lNt" target="_blank">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLreJf34qirZ6hE2jN8HtC8_DpA3VGvCmwC4iOlyXC_K5Pn5mLjVEOjFpU&s=10" alt="Conejo mini lop">
+                </a>
+                <p>Se reconoce fácilmente por sus largas orejas caídas. Tiene un carácter dócil, tranquilo y muy cariñoso. Presione sobre la imagen para ver el video.</p>
+                <div>
+                    <input type="button" value="Ver info">
+                    <input type="button" value="Comprar mascota">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <h3>Página diseñada por Sarmiento y Paz</h3>
+    </footer>
+</body>
+</html>
