@@ -39,7 +39,7 @@ const ANIMALES = {
 let carrito = {};
 
 const CLAVE_STORAGE = "carritoAnimales";
-
+ 
 function cargarCarrito() {
     try {
         carrito = JSON.parse(localStorage.getItem(CLAVE_STORAGE)) || {};
