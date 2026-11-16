@@ -229,6 +229,35 @@
     <footer>
         <h3>Página diseñada por Sarmiento y Paz</h3>
     </footer>
+
+<div class="overlay" id="overlayInfo">
+    <div class="modal">
+        <button class="cerrar" data-cerrar="overlayInfo">&times;</button>
+        <h3 id="infoTitulo"></h3>
+        <div id="infoDatos"></div>
+        <p class="descripcion" id="infoDescripcion"></p>
+        <button class="btn-rojo" id="infoComprar">Comprar entrada</button>
+    </div>
+</div>
+
+<div class="overlay" id="overlayCarrito">
+    <div class="modal">
+        <button class="cerrar" data-cerrar="overlayCarrito">&times;</button>
+        <h3>Tu carrito</h3>
+        <div id="carritoItems"></div>
+        <div id="carritoPie">
+            <div class="total"><span>Total</span><span id="carritoTotal">$0</span></div>
+            <div class="campo">
+                <input type="text" id="nombreCliente" maxlength="60" placeholder="Tu nombre">
+                <div class="error" id="errorNombre"></div>
+            </div>
+            <button class="btn-rojo btn-whatsapp" id="btnEnviar">Enviar pedido por WhatsApp</button>
+            <button class="btn-rojo btn-secundario" id="btnVaciar">Vaciar carrito</button>
+        </div>
+    </div>
+</div>
+
+<div class="aviso" id="aviso"></div>
 </body>
 </html>
 
