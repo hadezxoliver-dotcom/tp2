@@ -1,300 +1,331 @@
-/* ==========================================
-           CONFIGURACIÓN (editá acá los datos)
-           ========================================== */
-        // Número de WhatsApp que recibe los pedidos (formato internacional, sin + ni espacios)
-        // 54 = Argentina, 9 = celular, 3564 = característica, 581110 = número
-        const WHATSAPP_NUMERO = "5493564581110";
 
-        // Datos de cada artista. IMPORTANTE: revisá los precios, fechas y lugares.
-        const ARTISTAS = {
-            renga: {
-                nombre: "La Renga",
-                genero: "Rock",
-                tema: "La balada del diablo y la muerte",
-                precio: 15000,
-                fecha: "A confirmar",
-                lugar: "A confirmar",
-                descripcion: "Banda de rock argentina. Su tema más conocido es \"La balada del diablo y la muerte\"."
-            },
-            michael: {
-                nombre: "Michael Jackson",
-                genero: "Pop",
-                tema: "Bad",
-                precio: 25000,
-                fecha: "A confirmar",
-                lugar: "A confirmar",
-                descripcion: "Conocido como el Rey del Pop. \"Bad\" es una de sus canciones más famosas."
-            },
-            karina: {
-                nombre: "Karina",
-                genero: "Cumbia",
-                tema: "Diganle",
-                precio: 12000,
-                fecha: "A confirmar",
-                lugar: "A confirmar",
-                descripcion: "Cantante de cumbia. \"Diganle\" es uno de sus temas más conocidos, del álbum \"Con la misma moneda\"."
-            },
-            sosa: {
-                nombre: "Sosa 66s",
-                genero: "Rap",
-                tema: "Mi peor vicio",
-                precio: 10000,
-                fecha: "A confirmar",
-                lugar: "A confirmar",
-                descripcion: "Artista de rap. \"Mi peor vicio\" es uno de sus temas más escuchados."
-            }
-        };
+/* PRODUCTOS DE LA TIENDA */
 
-        /* ==========================================
-           ESTADO DEL CARRITO
-           ========================================== */
-        const CLAVE_STORAGE = "carritoEntradas";
-        let carrito = {}; // { idArtista: cantidad }
+const ANIMALES = {
+    gato1: {
+        nombre: "Gato europeo común",
+        tipo: "Gato",
+        precio: 15000
+    },
+    gato2: {
+        nombre: "Maine Coon",
+        tipo: "Gato",
+        precio: 25000
+    },
+    perro1: {
+        nombre: "Golden Retriever",
+        tipo: "Perro",
+        precio: 30000
+    },
+    perro2: {
+        nombre: "Ovejero Alemán",
+        tipo: "Perro",
+        precio: 28000
+    },
+    conejo1: {
+        nombre: "Cabeza de León",
+        tipo: "Conejo",
+        precio: 12000
+    },
+    conejo2: {
+        nombre: "Mini Lop",
+        tipo: "Conejo",
+        precio: 10000
+    }
+};
 
-        function cargarCarrito() {
-            try {
-                const guardado = JSON.parse(localStorage.getItem(CLAVE_STORAGE));
-                if (guardado && typeof guardado === "object") {
-                    Object.keys(guardado).forEach(function (id) {
-                        const cant = parseInt(guardado[id], 10);
-                        if (ARTISTAS[id] && cant > 0) carrito[id] = cant;
-                    });
-                }
-            } catch (e) { /* sin storage disponible: se usa solo en memoria */ }
-        }
+/* CARRITO */
 
-        function guardarCarrito() {
-            try { localStorage.setItem(CLAVE_STORAGE, JSON.stringify(carrito)); } catch (e) {}
-        }
+let carrito = {};
 
-        /* ==========================================
-           UTILIDADES
-           ========================================== */
-        const $ = function (id) { return document.getElementById(id); };
+const CLAVE_STORAGE = "carritoAnimales";
 
-        function formatoPrecio(n) {
-            return "$" + n.toLocaleString("es-AR");
-        }
+function cargarCarrito() {
+    try {
+        carrito = JSON.parse(localStorage.getItem(CLAVE_STORAGE)) || {};
+    } catch (e) {
+        carrito = {};
+    }
 
-        function escapeHtml(texto) {
-            return String(texto)
-                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-        }
-
-        let temporizadorAviso;
-        function mostrarAviso(texto) {
-            const el = $("aviso");
-            el.textContent = texto;
-            el.classList.add("visible");
-            clearTimeout(temporizadorAviso);
-            temporizadorAviso = setTimeout(function () { el.classList.remove("visible"); }, 2200);
-        }
-
-        function abrir(idOverlay) { $(idOverlay).classList.add("abierto"); }
-        function cerrar(idOverlay) { $(idOverlay).classList.remove("abierto"); }
-
-        /* ==========================================
-           CARRITO
-           ========================================== */
-        function totalEntradas() {
-            return Object.keys(carrito).reduce(function (acc, id) { return acc + carrito[id]; }, 0);
-        }
-
-        function totalPrecio() {
-            return Object.keys(carrito).reduce(function (acc, id) {
-                return acc + carrito[id] * ARTISTAS[id].precio;
-            }, 0);
-        }
-
-        function agregarAlCarrito(id) {
-            carrito[id] = (carrito[id] || 0) + 1;
-            guardarCarrito();
-            renderCarrito();
-            mostrarAviso("✔ Entrada de " + ARTISTAS[id].nombre + " agregada al carrito");
-            const btn = $("btnCarrito");
-            btn.classList.remove("bump");
-            void btn.offsetWidth; // reinicia la animación
-            btn.classList.add("bump");
-        }
-
-        function cambiarCantidad(id, delta) {
-            if (!carrito[id]) return;
-            carrito[id] += delta;
-            if (carrito[id] <= 0) delete carrito[id];
-            guardarCarrito();
-            renderCarrito();
-        }
-
-        function quitarDelCarrito(id) {
+    Object.keys(carrito).forEach(function(id) {
+        if (!ANIMALES[id] || carrito[id] <= 0) {
             delete carrito[id];
-            guardarCarrito();
-            renderCarrito();
         }
+    });
+}
 
-        function vaciarCarrito() {
-            carrito = {};
-            guardarCarrito();
-            renderCarrito();
-        }
+function guardarCarrito() {
+    localStorage.setItem(CLAVE_STORAGE, JSON.stringify(carrito));
+}
 
-        function renderCarrito() {
-            $("contador").textContent = totalEntradas();
+function formatoPrecio(precio) {
+    return "$" + precio.toLocaleString("es-AR");
+}
 
-            const ids = Object.keys(carrito);
-            const contenedor = $("carritoItems");
+function totalProductos() {
+    return Object.values(carrito).reduce(function(total, cantidad) {
+        return total + cantidad;
+    }, 0);
+}
 
-            if (ids.length === 0) {
-                contenedor.innerHTML = '<div class="carrito-vacio">Tu carrito está vacío.<br>Agregá entradas con el botón "Comprar entrada".</div>';
-                $("carritoPie").style.display = "none";
-                return;
-            }
+function totalPrecio() {
+    return Object.keys(carrito).reduce(function(total, id) {
+        return total + carrito[id] * ANIMALES[id].precio;
+    }, 0);
+}
 
-            $("carritoPie").style.display = "block";
-            contenedor.innerHTML = ids.map(function (id) {
-                const a = ARTISTAS[id];
-                const cant = carrito[id];
-                return '<div class="item-carrito">' +
-                    '<span class="nombre">' + escapeHtml(a.nombre) + '</span>' +
-                    '<span class="subtotal">' + formatoPrecio(cant * a.precio) + '</span>' +
-                    '<span class="detalle">' + formatoPrecio(a.precio) + ' c/u</span>' +
-                    '<span class="controles">' +
-                        '<button type="button" data-cant="-1" data-id="' + id + '" aria-label="Quitar una">−</button>' +
-                        '<span class="cantidad">' + cant + '</span>' +
-                        '<button type="button" data-cant="1" data-id="' + id + '" aria-label="Agregar una">+</button>' +
-                        '<button type="button" class="quitar" data-quitar="' + id + '" aria-label="Eliminar">✕</button>' +
-                    '</span>' +
-                '</div>';
-            }).join("");
+/* AGREGAR PRODUCTOS */
 
-            $("carritoTotal").textContent = formatoPrecio(totalPrecio());
-        }
+function agregarAlCarrito(id) {
+    if (!ANIMALES[id]) return;
 
-        /* ==========================================
-           MODAL "VER INFO"
-           ========================================== */
-        let idInfoActual = null;
+    carrito[id] = (carrito[id] || 0) + 1;
 
-        function mostrarInfo(id) {
-            const a = ARTISTAS[id];
-            if (!a) return;
-            idInfoActual = id;
-            $("infoTitulo").textContent = a.nombre;
-            $("infoDatos").innerHTML =
-                '<div class="dato"><span>Género</span><span>' + escapeHtml(a.genero) + '</span></div>' +
-                '<div class="dato"><span>Tema más conocido</span><span>' + escapeHtml(a.tema) + '</span></div>' +
-                '<div class="dato"><span>Fecha</span><span>' + escapeHtml(a.fecha) + '</span></div>' +
-                '<div class="dato"><span>Lugar</span><span>' + escapeHtml(a.lugar) + '</span></div>' +
-                '<div class="dato"><span>Precio por entrada</span><span>' + formatoPrecio(a.precio) + '</span></div>';
-            $("infoDescripcion").textContent = a.descripcion;
-            abrir("overlayInfo");
-        }
+    guardarCarrito();
+    renderCarrito();
 
-        /* ==========================================
-           ENVÍO POR WHATSAPP
-           ========================================== */
-        function armarMensaje(nombre) {
-            const lineas = ["Hola! Quiero comprar las siguientes entradas:", ""];
-            Object.keys(carrito).forEach(function (id) {
-                const a = ARTISTAS[id];
-                const cant = carrito[id];
-                lineas.push("• " + cant + " x " + a.nombre + " (" + a.genero + ") - " + formatoPrecio(cant * a.precio));
-            });
-            lineas.push("");
-            lineas.push("Total: " + formatoPrecio(totalPrecio()));
-            lineas.push("Nombre: " + nombre);
-            return lineas.join("\n");
-        }
+    mostrarAviso("¡Mascota agregada al carrito!");
+}
 
-        function enviarPorWhatsApp() {
-            if (totalEntradas() === 0) {
-                mostrarAviso("El carrito está vacío");
-                return;
-            }
+/* CAMBIAR CANTIDAD */
 
-            const nombre = $("nombreCliente").value.trim();
-            if (!nombre) {
-                $("errorNombre").textContent = "Ingresá tu nombre para continuar.";
-                $("nombreCliente").focus();
-                return;
-            }
-            $("errorNombre").textContent = "";
+function cambiarCantidad(id, cantidad) {
+    if (!carrito[id]) return;
 
-            const url = "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(armarMensaje(nombre));
-            const ventana = window.open(url, "_blank");
-            if (!ventana) {
-                // Si el navegador bloquea la ventana emergente, se abre en la misma pestaña
-                window.location.href = url;
-            }
-        }
+    carrito[id] += cantidad;
 
-        /* ==========================================
-           EVENTOS
-           ========================================== */
-        document.addEventListener("click", function (e) {
-            const t = e.target;
+    if (carrito[id] <= 0) {
+        delete carrito[id];
+    }
 
-            // Botones de las tarjetas
-            if (t.dataset && t.dataset.accion === "comprar") {
-                agregarAlCarrito(t.dataset.id);
-                return;
-            }
-            if (t.dataset && t.dataset.accion === "info") {
-                mostrarInfo(t.dataset.id);
-                return;
-            }
+    guardarCarrito();
+    renderCarrito();
+}
 
-            // Cantidades y quitar dentro del carrito
-            if (t.dataset && t.dataset.cant) {
-                cambiarCantidad(t.dataset.id, parseInt(t.dataset.cant, 10));
-                return;
-            }
-            if (t.dataset && t.dataset.quitar) {
-                quitarDelCarrito(t.dataset.quitar);
-                return;
-            }
+/* ELIMINAR PRODUCTO */
 
-            // Cerrar con la X
-            if (t.dataset && t.dataset.cerrar) {
-                cerrar(t.dataset.cerrar);
-                return;
-            }
+function quitarDelCarrito(id) {
+    delete carrito[id];
 
-            // Cerrar al hacer click fuera del modal
-            if (t.classList && t.classList.contains("overlay")) {
-                t.classList.remove("abierto");
-            }
-        });
+    guardarCarrito();
+    renderCarrito();
+}
 
-        $("btnCarrito").addEventListener("click", function () {
-            renderCarrito();
-            abrir("overlayCarrito");
-        });
+/* VACIAR CARRITO */
 
-        $("infoComprar").addEventListener("click", function () {
-            if (idInfoActual) agregarAlCarrito(idInfoActual);
-            cerrar("overlayInfo");
-        });
+function vaciarCarrito() {
+    carrito = {};
 
-        $("btnEnviar").addEventListener("click", enviarPorWhatsApp);
+    guardarCarrito();
+    renderCarrito();
+}
 
-        $("btnVaciar").addEventListener("click", function () {
-            vaciarCarrito();
-            mostrarAviso("Carrito vaciado");
-        });
+/* MOSTRAR CARRITO */
 
-        $("nombreCliente").addEventListener("input", function () {
-            $("errorNombre").textContent = "";
-        });
+function renderCarrito() {
+    document.getElementById("contador").textContent = totalProductos();
 
-        // Cerrar con la tecla Escape
-        document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape") {
-                cerrar("overlayInfo");
-                cerrar("overlayCarrito");
-            }
-        });
+    const contenedor = document.getElementById("carritoItems");
+    const pie = document.getElementById("carritoPie");
 
-        // Inicio
-        cargarCarrito();
-        renderCarrito();
+    const ids = Object.keys(carrito);
+
+    if (ids.length === 0) {
+        contenedor.innerHTML = "<p>Tu carrito está vacío.</p>";
+        pie.style.display = "none";
+        return;
+    }
+
+    pie.style.display = "block";
+
+    contenedor.innerHTML = ids.map(function(id) {
+        const animal = ANIMALES[id];
+        const cantidad = carrito[id];
+
+        return `
+            <div class="item-carrito">
+                <h4>${animal.nombre}</h4>
+
+                <p>Precio: ${formatoPrecio(animal.precio)}</p>
+
+                <p>Subtotal: ${formatoPrecio(animal.precio * cantidad)}</p>
+
+                <button data-cant="-1" data-id="${id}">-</button>
+
+                <span>${cantidad}</span>
+
+                <button data-cant="1" data-id="${id}">+</button>
+
+                <button data-quitar="${id}">Eliminar</button>
+            </div>
+        `;
+    }).join("");
+
+    document.getElementById("carritoTotal").textContent =
+        formatoPrecio(totalPrecio());
+}
+
+/* MOSTRAR INFORMACIÓN */
+
+let idInfoActual = null;
+
+function mostrarInfo(id) {
+    const animal = ANIMALES[id];
+
+    if (!animal) return;
+
+    idInfoActual = id;
+
+    document.getElementById("infoTitulo").textContent = animal.nombre;
+
+    document.getElementById("infoDatos").innerHTML =
+        "<p>Tipo: " + animal.tipo + "</p>" +
+        "<p>Precio: " + formatoPrecio(animal.precio) + "</p>";
+
+    document.getElementById("infoDescripcion").textContent =
+        "Conocé más sobre " + animal.nombre + ".";
+
+    abrir("overlayInfo");
+}
+
+/* ABRIR Y CERRAR VENTANAS */
+
+function abrir(id) {
+    document.getElementById(id).classList.add("abierto");
+}
+
+function cerrar(id) {
+    document.getElementById(id).classList.remove("abierto");
+}
+
+/* AVISOS */
+
+let temporizadorAviso;
+
+function mostrarAviso(texto) {
+    const aviso = document.getElementById("aviso");
+
+    aviso.textContent = texto;
+    aviso.classList.add("visible");
+
+    clearTimeout(temporizadorAviso);
+
+    temporizadorAviso = setTimeout(function() {
+        aviso.classList.remove("visible");
+    }, 2200);
+}
+
+/* BOTONES DE LA PÁGINA */
+
+document.addEventListener("click", function(e) {
+    const t = e.target;
+
+    if (t.dataset.accion === "comprar") {
+        agregarAlCarrito(t.dataset.id);
+        return;
+    }
+
+    if (t.dataset.accion === "info") {
+        mostrarInfo(t.dataset.id);
+        return;
+    }
+
+    if (t.dataset.cant) {
+        cambiarCantidad(
+            t.dataset.id,
+            parseInt(t.dataset.cant)
+        );
+        return;
+    }
+
+    if (t.dataset.quitar) {
+        quitarDelCarrito(t.dataset.quitar);
+        return;
+    }
+
+    if (t.dataset.cerrar) {
+        cerrar(t.dataset.cerrar);
+        return;
+    }
+
+    if (t.classList.contains("overlay")) {
+        t.classList.remove("abierto");
+    }
+});
+
+/* BOTÓN DEL CARRITO */
+
+document.getElementById("btnCarrito").addEventListener("click", function() {
+    renderCarrito();
+    abrir("overlayCarrito");
+});
+
+/* BOTÓN COMPRAR DESDE INFORMACIÓN */
+
+document.getElementById("infoComprar").addEventListener("click", function() {
+    if (idInfoActual) {
+        agregarAlCarrito(idInfoActual);
+        cerrar("overlayInfo");
+    }
+});
+
+/* VACIAR CARRITO */
+
+document.getElementById("btnVaciar").addEventListener("click", function() {
+    vaciarCarrito();
+    mostrarAviso("Carrito vaciado");
+});
+
+/* ENVÍO DEL PEDIDO */
+
+document.getElementById("btnEnviar").addEventListener("click", function() {
+    if (totalProductos() === 0) {
+        mostrarAviso("El carrito está vacío");
+        return;
+    }
+
+    const nombre = document.getElementById("nombreCliente").value.trim();
+
+    if (nombre === "") {
+        document.getElementById("errorNombre").textContent =
+            "Ingresá tu nombre para continuar.";
+        return;
+    }
+
+    document.getElementById("errorNombre").textContent = "";
+
+    let mensaje = "Hola! Quiero consultar por estos productos:\n\n";
+
+    Object.keys(carrito).forEach(function(id) {
+        const animal = ANIMALES[id];
+
+        mensaje += carrito[id] + " x " + animal.nombre +
+            " - " + formatoPrecio(carrito[id] * animal.precio) + "\n";
+    });
+
+    mensaje += "\nTotal: " + formatoPrecio(totalPrecio());
+    mensaje += "\nNombre: " + nombre;
+
+    const numero = "5493564581110";
+
+    window.open(
+        "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensaje),
+        "_blank"
+    );
+});
+
+/* INICIO */
+
+document.getElementById("nombreCliente").addEventListener("input", function() {
+    document.getElementById("errorNombre").textContent = "";
+});
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        cerrar("overlayInfo");
+        cerrar("overlayCarrito");
+    }
+});
+
+cargarCarrito();
+renderCarrito();
